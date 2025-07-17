@@ -1,4 +1,4 @@
-import { serve } from "bun";
+import { file, serve } from "bun";
 import index from "./index.html";
 
 const server = serve({
@@ -35,6 +35,11 @@ const server = serve({
 
     // Echo console logs from the browser to the server
     console: true,
+  },
+
+  tls: {
+    cert: file("secret/server.crt"),
+    key: file("secret/server.key"),
   },
 });
 
