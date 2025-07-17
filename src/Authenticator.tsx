@@ -1,6 +1,6 @@
 import { useRef, type FormEvent } from "react";
 
-export function APITester() {
+export function Authenticator() {
   const responseInputRef = useRef<HTMLTextAreaElement>(null);
 
   const testEndpoint = async (e: FormEvent<HTMLFormElement>) => {
