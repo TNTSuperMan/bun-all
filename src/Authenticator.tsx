@@ -25,8 +25,10 @@ export function Authenticator() {
     <div className="api-tester">
       <form onSubmit={testEndpoint} className="endpoint-row">
         <select name="method" className="method">
-          <option value="GET">GET</option>
-          <option value="PUT">PUT</option>
+          <option value="password">Password</option>
+          <option value="webauthn">WebAuthn</option>
+          <option value="totp">TOTP</option>
+          <option value="server">Server</option>
         </select>
         <input type="text" name="endpoint" defaultValue="/api/hello" className="url-input" placeholder="/api/hello" />
         <button type="submit" className="send-button">
