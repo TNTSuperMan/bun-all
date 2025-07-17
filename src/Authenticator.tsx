@@ -22,7 +22,7 @@ export function Authenticator() {
   };
 
   return (
-    <div className="api-tester">
+    <div className="authenticator">
       <form onSubmit={testEndpoint} className="endpoint-row">
         <select name="method" className="method">
           <option value="password">Password</option>
