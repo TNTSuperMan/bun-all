@@ -14,7 +14,7 @@ export function Authenticator() {
   const challengeID = useRef<string|null>(null);
   const [method, setMethod] = useState<Methods>("password");
 
-  const testEndpoint = async (e: FormEvent<HTMLFormElement>) => {
+  const login = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
@@ -40,7 +40,7 @@ export function Authenticator() {
 
   return (
     <div className="authenticator">
-      <form onSubmit={testEndpoint} className="endpoint-row">
+      <form onSubmit={login} className="endpoint-row">
         <select name="method" className="method" value={method} onChange={e=>setMethod(e.target.value as any)}>
           <option value="password">Password</option>
           <option value="webauthn">WebAuthn</option>
