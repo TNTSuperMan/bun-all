@@ -11,7 +11,7 @@ const methodsPlaceholder: Record<Methods, string> = {
 
 export function Authenticator() {
   const responseInputRef = useRef<HTMLTextAreaElement>(null);
-  const challangeID = useRef<string|null>(null);
+  const challengeID = useRef<string|null>(null);
   const [method, setMethod] = useState<Methods>("password");
 
   const testEndpoint = async (e: FormEvent<HTMLFormElement>) => {
@@ -32,8 +32,10 @@ export function Authenticator() {
     }
   };
 
-  const challange = async () => {
-
+  const challenge = async () => {
+    const response = await fetch("/server_auth/challange", { method: "post" });
+    const id = await response.json() as string;
+    challengeID.current = id;
   };
 
   return (
@@ -45,7 +47,7 @@ export function Authenticator() {
           <option value="totp">TOTP</option>
           <option value="server">Server</option>
         </select>
-        {method === "server" && <button className="challange-button" onClick={challange}>Challange</button>}
+        {method === "server" && <button className="challange-button" onClick={challenge}>Challange</button>}
         {method !== "webauthn" &&
           <input type={method === "password" ? "password" : "text"} name="pass" className="input" placeholder={methodsPlaceholder[method]} />}
         <button type="submit" className="login-button">
