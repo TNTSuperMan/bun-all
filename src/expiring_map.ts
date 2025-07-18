@@ -7,7 +7,7 @@ export class ExpiringMap<K, V> {
     this.#map.set(key, [value, Date.now() + expire]);
   }
   get(key: K): V | undefined {
-    if(this.has(key)) return this.get(key);
+    if(this.has(key)) return this.#map.get(key)![0];
   }
   has(key: K): boolean {
     const value = this.#map.get(key);
