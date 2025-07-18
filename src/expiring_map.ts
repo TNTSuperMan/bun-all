@@ -1,7 +1,9 @@
 export class ExpiringMap<K, V> {
   #map: Map<K, [V, number]>;
-  constructor() {
+  #interval: NodeJS.Timeout;
+  constructor(sweep_interval = 10000) {
     this.#map = new Map;
+    this.#interval = setInterval(() => this.sweep(), sweep_interval);
   }
   set(key: K, value: V, expire: number) {
     this.#map.set(key, [value, Date.now() + expire]);
@@ -24,5 +26,11 @@ export class ExpiringMap<K, V> {
   sweep() {
     this.#map.forEach(([, expire], key) =>
       expire < Date.now() ? this.#map.delete(key) : 0);
+  }
+  [Symbol.dispose]() {
+    this.dispose();
+  }
+  dispose() {
+    clearInterval(this.#interval);
   }
 }

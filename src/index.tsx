@@ -6,7 +6,6 @@ import { ExpiringMap } from "./expiring_map";
 const yellow = color("#FFFF00", "ansi");
 
 const challenges = new ExpiringMap<string, string>();
-setTimeout(() => challenges.sweep(), 10000);
 
 const server = serve({
   routes: {
@@ -29,7 +28,7 @@ const server = serve({
     "/server_auth/verify/:challenge_id": {
       async POST(req) {
         await limit();
-        
+
         const { challenge_id } = req.params;
         const input_code = (await req.text()).toLowerCase();
         
