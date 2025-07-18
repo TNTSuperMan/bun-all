@@ -1,31 +1,30 @@
-import { file, serve } from "bun";
+import { color, file, randomUUIDv7, serve } from "bun";
 import index from "./index.html";
+import { limit } from "./limit";
+
+const yellow = color("#FFFF00", "ansi");
+
+const challenges: Map<string, [string, number]> = new Map;
+setInterval(() => challenges.forEach(([, expire], key) =>
+  expire < Date.now() ? challenges.delete(key) : 0), 10000);
 
 const server = serve({
   routes: {
     // Serve index.html for all unmatched routes.
     "/*": index,
 
-    "/api/hello": {
-      async GET(req) {
-        return Response.json({
-          message: "Hello, world!",
-          method: "GET",
-        });
+    "/server_auth/challange": {
+      async POST(req) {
+        await limit();
+        const challenge_id = randomUUIDv7("hex");
+        const id = crypto.getRandomValues(new Uint8Array(3)).toHex();
+        const expire = Date.now() + 60000;
+        challenges.set(challenge_id, [id, expire]);
+        
+        console.log(`[AUTH] Code: ${yellow}${id}\x1b[0m | Challenge: ${challenge_id}`);
+        
+        return Response.json(challenge_id);
       },
-      async PUT(req) {
-        return Response.json({
-          message: "Hello, world!",
-          method: "PUT",
-        });
-      },
-    },
-
-    "/api/hello/:name": async req => {
-      const name = req.params.name;
-      return Response.json({
-        message: `Hello, ${name}!`,
-      });
     },
   },
 
