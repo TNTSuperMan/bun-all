@@ -28,7 +28,7 @@ const server = serve({
     "/server_auth/verify/:challenge_id": {
       async POST(req) {
         await limit();
-
+        
         const { challenge_id } = req.params;
         const input_code = (await req.text()).toLowerCase();
         
