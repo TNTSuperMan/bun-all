@@ -128,7 +128,7 @@ code {
 .method option {
   text-align: left;
 }
-.url-input {
+.input {
   width: 100%;
   flex: 1;
   background: 0;
@@ -138,13 +138,13 @@ code {
   padding: 0.2rem;
   outline: 0;
 }
-.url-input:focus {
+.input:focus {
   color: #fff;
 }
-.url-input::placeholder {
+.input::placeholder {
   color: rgba(251, 240, 223, 0.4);
 }
-.send-button {
+.login-button {
   background: #fbf0df;
   color: #1a1a1a;
   border: 0;
@@ -154,7 +154,7 @@ code {
   transition: 0.1s;
   cursor: var(--bun-cursor);
 }
-.send-button:hover {
+.login-button:hover {
   background: #f3d5a3;
   transform: translateY(-1px);
   cursor: pointer;

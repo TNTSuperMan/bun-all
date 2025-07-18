@@ -1,7 +1,17 @@
-import { useRef, type FormEvent } from "react";
+import { useRef, useState, type FormEvent } from "react";
+
+type Methods = "password" | "webauthn" | "totp" | "server";
+
+const methodsPlaceholder: Record<Methods, string> = {
+  password: "password here...",
+  webauthn: "",
+  totp: "TOTP code here...",
+  server: "Server code here...",
+}
 
 export function Authenticator() {
   const responseInputRef = useRef<HTMLTextAreaElement>(null);
+  const [method, setMethod] = useState<Methods>("password");
 
   const testEndpoint = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -24,15 +34,16 @@ export function Authenticator() {
   return (
     <div className="authenticator">
       <form onSubmit={testEndpoint} className="endpoint-row">
-        <select name="method" className="method">
+        <select name="method" className="method" value={method} onChange={e=>setMethod(e.target.value as any)}>
           <option value="password">Password</option>
           <option value="webauthn">WebAuthn</option>
           <option value="totp">TOTP</option>
           <option value="server">Server</option>
         </select>
-        <input type="text" name="endpoint" defaultValue="/api/hello" className="url-input" placeholder="/api/hello" />
-        <button type="submit" className="send-button">
-          Send
+        {method !== "webauthn" &&
+          <input type={method === "password" ? "password" : "text"} name="pass" className="input" placeholder={methodsPlaceholder[method]} />}
+        <button type="submit" className="login-button">
+          Login
         </button>
       </form>
       <textarea ref={responseInputRef} readOnly placeholder="Response will appear here..." className="response-area" />
