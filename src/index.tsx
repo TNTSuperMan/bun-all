@@ -1,12 +1,12 @@
 import { color, file, randomUUIDv7, serve } from "bun";
 import index from "./index.html";
 import { limit } from "./limit";
+import { ExpiringMap } from "./expiring_map";
 
 const yellow = color("#FFFF00", "ansi");
 
-const challenges: Map<string, [string, number]> = new Map;
-setInterval(() => challenges.forEach(([, expire], key) =>
-  expire < Date.now() ? challenges.delete(key) : 0), 10000);
+const challenges = new ExpiringMap<string, string>();
+setTimeout(() => challenges.sweep(), 10000);
 
 const server = serve({
   routes: {
@@ -18,8 +18,7 @@ const server = serve({
         await limit();
         const challenge_id = randomUUIDv7("hex");
         const id = crypto.getRandomValues(new Uint8Array(3)).toHex();
-        const expire = Date.now() + 60000;
-        challenges.set(challenge_id, [id, expire]);
+        challenges.set(challenge_id, id, 60000);
         
         console.log(`[AUTH] Code: ${yellow}${id}\x1b[0m | Challenge: ${challenge_id}`);
         
