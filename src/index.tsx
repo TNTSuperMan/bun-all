@@ -26,6 +26,30 @@ const server = serve({
         return Response.json(challenge_id);
       },
     },
+    "/server_auth/verify/:challenge_id": {
+      async POST(req) {
+        await limit();
+        const { challenge_id } = req.params;
+        const input_code = await req.text();
+
+        if(!challenges.has(challenge_id)) {
+          return Response.json({
+            error: "Invalid or expired challange"
+          }, { status: 404, statusText: "Not Found" });
+        } else {
+          const [code] = challenges.get(challenge_id)!;
+          challenges.delete(challenge_id);
+          if(input_code !== code) {
+            return Response.json({
+              error: "Code incorrect"
+            }, { status: 401, statusText: "Unauthorized" });
+          } else {
+            // TODO: create session
+            return Response.json({});
+          }
+        }
+      },
+    },
   },
 
   development: process.env.NODE_ENV !== "production" && {
