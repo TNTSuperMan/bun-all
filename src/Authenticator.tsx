@@ -47,7 +47,7 @@ export function Authenticator() {
           <option value="totp">TOTP</option>
           <option value="server">Server</option>
         </select>
-        {method === "server" && <button className="challange-button" onClick={challenge}>Challange</button>}
+        {method === "server" && <button type="button" className="challange-button" onClick={challenge}>Challange</button>}
         {method !== "webauthn" &&
           <input type={method === "password" ? "password" : "text"} name="pass" className="input" placeholder={methodsPlaceholder[method]} />}
         <button type="submit" className="login-button">
