@@ -30,7 +30,7 @@ const server = serve({
       async POST(req) {
         await limit();
         const { challenge_id } = req.params;
-        const input_code = await req.text();
+        const input_code = (await req.text()).toLowerCase();
 
         if(!challenges.has(challenge_id)) {
           return Response.json({
